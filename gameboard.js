@@ -26,6 +26,14 @@ class Gameboard {
     return true;
   }
 
+  allShipsSunk() {
+    let isAllShipSunk = true;
+    this._ships.forEach(ship => {
+      if(!ship.isSunk()) isAllShipSunk = false;
+    })
+    return isAllShipSunk;
+  }
+
   _isPositionAvailable(startPosition, direction, length) {
     const X = startPosition.x;
     const Y = startPosition.y;
@@ -48,7 +56,18 @@ class Gameboard {
 
   getBoard = () => this._board;
 
-  receiveAttack(x, y) {}
+  receiveAttack(x, y) {
+    let square = this._board[x][y];
+    if (square.shoot) return -1;
+
+    if (square.ship) {
+      square.shoot = 'x';
+      square.ship.hit();
+      return 'x';
+    }
+    square.shoot = 'o';
+    return square.shoot;
+  }
 
   _createdboard() {
     const rows = 10;
