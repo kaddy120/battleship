@@ -1,4 +1,5 @@
 const { Ship, ShipLength } = require('./ship');
+const { BotPlayer } = require('./player');
 const { expect, test } = require('@jest/globals');
 const Gameboard = require('./gameboard');
 
@@ -132,34 +133,46 @@ test('return false if there are still operating ships on the board', () => {
 
   gameboard.addShip(ship2, { x: 0, y: 0 }, direction);
   gameboard.addShip(ship1, { x: 2, y: 0 }, direction);
-  expect(gameboard.allShipsSunk()).toBeFalsy()
+  expect(gameboard.allShipsSunk()).toBeFalsy();
 });
 
 test('return true if all ships in the board sunk', () => {
-
   const gameboard = new Gameboard();
 
   let direction = 'horizontal';
   const ship1 = new Ship(2);
   const ship2 = new Ship(2);
-  
+
   gameboard.addShip(ship1, { x: 0, y: 0 }, direction);
   gameboard.addShip(ship2, { x: 2, y: 0 }, direction);
 
-  gameboard.receiveAttack(0, 0)
-  gameboard.receiveAttack(1, 0)
-  gameboard.receiveAttack(2, 0)
-  gameboard.receiveAttack(3, 0)
-  expect(gameboard.allShipsSunk()).toBeTruthy()
+  gameboard.receiveAttack(0, 0);
+  gameboard.receiveAttack(1, 0);
+  gameboard.receiveAttack(2, 0);
+  gameboard.receiveAttack(3, 0);
+  expect(gameboard.allShipsSunk()).toBeTruthy();
 });
 
 /* Player
-* remember, there are two boards.
-* player 1 waters, 
-* player 2 waters, 
-* */
-test('player', () => {
-  const playerBot = new PlayerBot();
+ * remember, there are two boards.
+ * player 1 waters,
+ * player 2 waters,
+ * I can think of player is ship operator,
+ * The ship operate in the water.
+ * A player is operating the ship fleet.
+ * The player should have excess to the position it has     already fired.
+ * The player should have it's own interal map that i can use to decide.
+ * */
+
+test('botPlayer', () => {
   const player1Waters = new Gameboard();
-  const player2Waters = new Gameboard();
+  const botPlayer = new BotPlayer(() => player1Waters.getBoard());
+  botPlayer.shoot((x, y) => player1Waters.receiveAttack(x, y));
+  let board = player1Waters.getBoard();
+  let shootAt = botPlayer.lastShoot;
+  expect(board[shootAt.x][shootAt.y].shoot).not.toBeNull();
+});
+
+test('', () => {
+
 })
