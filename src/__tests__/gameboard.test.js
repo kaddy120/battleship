@@ -1,35 +1,6 @@
-const { Ship, ShipLength } = require('./ship');
-const { BotPlayer } = require('./player');
+const { Ship, ShipLength } = require('../ship');
+const Gameboard = require('../gameboard');
 const { expect, test } = require('@jest/globals');
-const Gameboard = require('./gameboard');
-const GameController = require('./gameController');
-
-/* Ship Object includes
- * - length
- * - number of times hit.
- * - Whether or not they are sunk
- * in addition, position, name
- * */
-
-test('Ship', () => {
-  const ship1 = new Ship(ShipLength.Destroyer, 'Destroyer');
-  expect(ship1.isSunk()).toBeFalsy();
-
-  ship1.hit();
-  expect(ship1.name).toBe('Destroyer');
-  /* expect(ship1.getHits()).toBe(1); */
-});
-
-test('ship sink if hit as much as ship length', () => {
-  const length = ShipLength.Cruiser;
-  const ship1 = new Ship(length);
-
-  for (let index = 0; index < length; index++) {
-    expect(ship1.isSunk()).toBeFalsy();
-    ship1.hit();
-  }
-  expect(ship1.isSunk()).toBeTruthy();
-});
 
 test('board is 10x10', () => {
   const gameboard = new Gameboard();
@@ -154,51 +125,3 @@ test('return true if all ships in the board sunk', () => {
   gameboard.receiveAttack(3, 0);
   expect(gameboard.allShipsSunk()).toBeTruthy();
 });
-
-/* Player
- * remember, there are two boards.
- * player 1 waters,
- * player 2 waters,
- * I can think of player is ship operator,
- * The ship operate in the water.
- * A player is operating the ship fleet.
- * The player should have excess to the position it has     already fired.
- * The player should have it's own interal map that i can use to decide.
- * */
-
-test('botPlayer', () => {
-  const player1Waters = new Gameboard();
-  const botPlayer = new BotPlayer(
-    () => player1Waters.getBoard(),
-    player1Waters
-  );
-  botPlayer.shoot((x, y) => player1Waters.receiveAttack(x, y));
-  let board = player1Waters.getBoard();
-  let shootAt = botPlayer.lastShoot;
-  expect(board[shootAt.x][shootAt.y].shoot).not.toBeNull();
-});
-
-test('randomly add all ships to botPlayers board', () => {
-  const player1Waters = new Gameboard();
-  const botWaters = new Gameboard();
-  let shipCount = 0;
-
-  // Code smell
-  const botPlayer = new BotPlayer(() => player1Waters.getBoard(), botWaters);
-
-  botPlayer.placeShips();
-  const board = botWaters.getBoard();
-  board.forEach((squares) => {
-    squares.forEach((square) => {
-      if (square.ship) shipCount++;
-    });
-  });
-  let total = 0;
-  for (const [key, value] of Object.entries(ShipLength)) {
-    total += value;
-  }
-  expect(shipCount).toBe(total);
-  expect(botWaters._ships.length).toBe(5);
-});
-
-test('GameController', () => {});
