@@ -8,9 +8,14 @@ const ShipLength = {
 
 class Ship {
   /*maybe i should add a ship name*/
-  constructor(length) {
+  constructor(length, name) {
+    this._name = name
     this._length = length;
     this._hit = 0;
+  }
+
+  get name(){
+    return this._name
   }
 
   length() {

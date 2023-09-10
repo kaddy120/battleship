@@ -18,7 +18,7 @@ class Gameboard {
       for (let x = X; x < X + ship.length(); x++) {
         this._board[x][Y] = { shoot: null, ship };
       }
-    } else if ((direction = 'vertical')) {
+    } else if ((direction === 'vertical')) {
       for (let y = Y; y < Y + ship.length(); y++) {
         this._board[X][y] = { shoot: null, ship };
       }
@@ -44,7 +44,7 @@ class Gameboard {
       for (let x = X; x < X + length; x++) {
         if (this._board[x][Y].ship) return false;
       }
-    } else if ((direction = 'vertical')) {
+    } else if ((direction === 'vertical')) {
       if (Y + length >= 10) return false;
 
       for (let y = Y; y < Y + length; y++) {

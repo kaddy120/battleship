@@ -2,6 +2,7 @@ const { Ship, ShipLength } = require('./ship');
 const { BotPlayer } = require('./player');
 const { expect, test } = require('@jest/globals');
 const Gameboard = require('./gameboard');
+const GameController = require('./gameController');
 
 /* Ship Object includes
  * - length
@@ -11,10 +12,11 @@ const Gameboard = require('./gameboard');
  * */
 
 test('Ship', () => {
-  const ship1 = new Ship(ShipLength.Destroyer);
+  const ship1 = new Ship(ShipLength.Destroyer, 'Destroyer');
   expect(ship1.isSunk()).toBeFalsy();
 
   ship1.hit();
+  expect(ship1.name).toBe('Destroyer');
   /* expect(ship1.getHits()).toBe(1); */
 });
 
@@ -166,13 +168,31 @@ test('return true if all ships in the board sunk', () => {
 
 test('botPlayer', () => {
   const player1Waters = new Gameboard();
-  const botPlayer = new BotPlayer(() => player1Waters.getBoard());
+  const botPlayer = new BotPlayer(
+    () => player1Waters.getBoard(),
+    player1Waters
+  );
   botPlayer.shoot((x, y) => player1Waters.receiveAttack(x, y));
   let board = player1Waters.getBoard();
   let shootAt = botPlayer.lastShoot;
   expect(board[shootAt.x][shootAt.y].shoot).not.toBeNull();
 });
 
-test('', () => {
+test('check if ships are added', () => {
+  const player1Waters = new Gameboard();
+  const botWaters = new Gameboard();
+  let shipCount = 0;
+  // Okay this interface doesn't make sense
+  const botPlayer = new BotPlayer(() => player1Waters.getBoard(), botWaters);
+  botPlayer.placeShips();
+  const board = botWaters.getBoard();
+  board.forEach((squares) => {
+    squares.forEach((square) => {
+      if (square.ship) shipCount++;
+    });
+  });
 
-})
+  expect(shipCount).toBe(5)
+});
+
+test('GameController', () => {});
