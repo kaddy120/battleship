@@ -178,12 +178,14 @@ test('botPlayer', () => {
   expect(board[shootAt.x][shootAt.y].shoot).not.toBeNull();
 });
 
-test('check if ships are added', () => {
+test('randomly add all ships to botPlayers board', () => {
   const player1Waters = new Gameboard();
   const botWaters = new Gameboard();
   let shipCount = 0;
-  // Okay this interface doesn't make sense
+
+  // Code smell
   const botPlayer = new BotPlayer(() => player1Waters.getBoard(), botWaters);
+
   botPlayer.placeShips();
   const board = botWaters.getBoard();
   board.forEach((squares) => {
@@ -191,8 +193,12 @@ test('check if ships are added', () => {
       if (square.ship) shipCount++;
     });
   });
-
-  expect(shipCount).toBe(5)
+  let total = 0;
+  for (const [key, value] of Object.entries(ShipLength)) {
+    total += value;
+  }
+  expect(shipCount).toBe(total);
+  expect(botWaters._ships.length).toBe(5);
 });
 
 test('GameController', () => {});
