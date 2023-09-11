@@ -14,12 +14,16 @@ body {
   grid-template-columns: repeat(10, 1fr);
 }
 
-.player-1{
- margin-right: 15px;
+.player-1 {
+  margin-right: 15px;
 }
 
 .square {
   border: 1px solid #000;
   width: 60px;
   height: 60px;
+}
+
+.highlight {
+  background: red;
 }
