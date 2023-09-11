@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    index: './src/screenController.js',
+    index: './src/index.js',
     /* print: './src/print.js', */
   },
   devServer: {
