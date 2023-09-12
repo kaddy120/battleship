@@ -65,7 +65,19 @@ class ScreenController {
       });
 
       square.addEventListener('click', (event) => {
-        this.addingShip += 1;
+        const position = this.parseSquare(square);
+        const name = this.shipNames[this.addingShip];
+        const path = carrier;
+        const imgMetadata = {
+          length: ShipLength[name],
+          position,
+          direction: this.direction,
+          path,
+        };
+        /* this.addingShip += 1; */
+        const player1Water = document.querySelector('.player-1');
+        player1Water.appendChild(this.shipIcon(imgMetadata));
+
         /* square.style.backgroundImage = `url('${submarine}')`; */
         /* square.style.backgroundSize = 'cover'; */
       });
@@ -117,6 +129,29 @@ class ScreenController {
 
   addShips() {}
 
+  shipIcon(metadata) {
+    const { x, y } = metadata.position;
+    const imgContainer = document.createElement('div');
+    const img = new Image();
+
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.src = metadata.path;
+    imgContainer.style.zIndex = 2;
+    imgContainer.style.gridRow = `${y + 1} /span 1`;
+    imgContainer.style.gridColumn = `${x + 1} /span ${metadata.length}`;
+    if (metadata.direction === 'vertical') {
+      imgContainer.style.gridRow = `${y + 1} /span ${metadata.length}`;
+      imgContainer.style.gridColumn = `${x + 1} /span 1`;
+      img.style.transform = 'rotate(90deg)'
+      /* img.style.height = '60px'; */
+      /* img.style.width = '300px'; */
+    }
+    imgContainer.appendChild(img);
+    return imgContainer;
+  }
+
   createBoard(player) {
     const playerBoard = document.createElement('div');
     playerBoard.classList.add(player);
@@ -128,6 +163,8 @@ class ScreenController {
         square.dataset.y = y;
         square.dataset.index = y * 10 + x;
         square.classList.add('square');
+        square.style.gridRow = `${y + 1}/span 1`;
+        square.style.gridColumn = `${x + 1}/span 1`;
         playerBoard.appendChild(square);
       }
     }

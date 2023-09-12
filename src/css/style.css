@@ -10,8 +10,8 @@ body {
 .player-1,
 .player-2 {
   display: grid;
-  grid-template-rows: repeat(10, 1fr);
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 60px);
+  grid-template-columns: repeat(10, 60px);
 }
 
 .player-1 {
@@ -19,11 +19,16 @@ body {
 }
 
 .square {
+  position: relative;
   border: 1px solid #000;
-  width: 60px;
-  height: 60px;
+  /* width: 60px; */
+  /* height: 60px; */
 }
 
 .highlight {
+  background: lightblue;
+}
+
+.highlight-error {
   background: red;
 }
