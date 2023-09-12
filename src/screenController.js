@@ -1,14 +1,26 @@
 const GameController = require('./gameController');
 const { ShipLength } = require('./ship');
 
+const battleship = require('./assets/battleship.svg');
+const destroyer = require('./assets/destroyer.svg');
+const submarine = require('./assets/submarine.svg');
+const patrol = require('./assets/patrol.svg');
+const carrier = require('./assets/carrier.svg');
+
 class ScreenController {
   constructor() {
-    this.direction = 'horizontal';
     this.addingShip = 0;
     this.shipNames = Object.keys(ShipLength);
 
     this.content = document.querySelector('#content');
+
+    this.direction = 'horizontal';
     this.rotateAxis = document.querySelector('#rotate-axis');
+    this.rotateAxis.onclick = () => {
+      this.direction =
+        this.direction === 'horizontal' ? 'vertical' : 'horizontal';
+    };
+
     this.game = new GameController();
 
     const waterContainer = document.createElement('div');
@@ -22,38 +34,41 @@ class ScreenController {
 
   run() {
     this.player1Squares.forEach((square) => {
-      const position = this.parseSquare(square);
-      const name = this.shipNames[this.addingShip];
-
-      square.addEventListener('mouseover', (event) => {
+      square.addEventListener('mouseover', () => {
+        const position = this.parseSquare(square);
+        const name = this.shipNames[this.addingShip];
         this.highLightSquares(
           position,
           this.direction,
           ShipLength[name],
-          (x, y) => {
+          (x, y, className = 'highlight') => {
             document
-              .querySelector(`#row-${y} #col-${x}`)
-              .classList.add('highlight');
+              .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
+              .classList.add(className);
           }
         );
       });
 
       square.addEventListener('mouseleave', () => {
+        const position = this.parseSquare(square);
+        const name = this.shipNames[this.addingShip];
         this.highLightSquares(
           position,
           this.direction,
           ShipLength[name],
-          (x, y) => {
+          (x, y, className = 'highlight') => {
             document
-              .querySelector(`#row-${y} #col-${x}`)
-              .classList.remove('highlight');
+              .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
+              .classList.remove(className);
           }
         );
       });
 
-      square.addEventListener('click', (event)=>{
-
-      })
+      square.addEventListener('click', (event) => {
+        this.addingShip += 1;
+        /* square.style.backgroundImage = `url('${submarine}')`; */
+        /* square.style.backgroundSize = 'cover'; */
+      });
     });
     //First of all it will allow me to add ships.
   }
@@ -65,10 +80,18 @@ class ScreenController {
     const Y = position.y;
 
     if (direction === 'horizontal') {
+      if (X + length > 10) {
+        handle(X, Y, 'highlight-error');
+        return;
+      }
       for (let x = X; x < X + length && x < 10; x++) {
         handle(x, Y);
       }
     } else if (direction === 'vertical') {
+      if (Y + length > 10) {
+        handle(X, Y, 'highlight-error');
+        return;
+      }
       for (let y = Y; y < Y + length && y < 10; y++) {
         handle(X, y);
       }
@@ -76,10 +99,8 @@ class ScreenController {
   }
 
   parseSquare(square) {
-    let rowId = square.parentElement.getAttribute('id');
-    let colId = square.getAttribute('id');
-    const x = parseInt(colId[rowId.length - 1]);
-    const y = parseInt(rowId[rowId.length - 1]);
+    const x = parseInt(square.dataset.x);
+    const y = parseInt(square.dataset.y);
     return { x, y };
   }
 
@@ -94,27 +115,21 @@ class ScreenController {
     alert('hello world from a class');
   }
 
-  addShips() {
-    this.rotateAxis.onclick = () => {
-      this.direction =
-        this.direction === 'horizontal' ? 'vertical' : 'horizontal';
-    };
-  }
+  addShips() {}
 
   createBoard(player) {
     const playerBoard = document.createElement('div');
     playerBoard.classList.add(player);
 
-    for (let i = 0; i < 10; i++) {
-      const row = document.createElement('div');
-      row.setAttribute('id', `row-${i}`);
-      for (let j = 0; j < 10; j++) {
-        const col = document.createElement('div');
-        col.setAttribute('id', `col-${j}`);
-        col.classList.add('square');
-        row.appendChild(col);
+    for (let y = 0; y < 10; y++) {
+      for (let x = 0; x < 10; x++) {
+        const square = document.createElement('div');
+        square.dataset.x = x;
+        square.dataset.y = y;
+        square.dataset.index = y * 10 + x;
+        square.classList.add('square');
+        playerBoard.appendChild(square);
       }
-      playerBoard.appendChild(row);
     }
     return playerBoard;
   }
