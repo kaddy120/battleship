@@ -1,13 +1,8 @@
 const { Ship, ShipLength } = require('./ship');
 
-class Player {
-  constructor() {}
-}
-
-class BotPlayer extends Player {
+class BotPlayer {
   constructor(getBoard, myWater) {
-    super();
-    /* The problem is that a board has record of the ship position*/
+    /* The problem is that a board has record of the ship position */
     this.board = getBoard;
     this.myWater = myWater;
     this.lastShoot = {
@@ -19,29 +14,31 @@ class BotPlayer extends Player {
 
   placeShips() {
     const directions = ['horizontal', 'vertical'];
-    for (const [key, value] of Object.entries(ShipLength)) {
-      const ship = new Ship(value, key);
+
+    Object.entries(ShipLength).forEach((value) => {
+      const ship = new Ship(value[0], value[1]);
       const direction = directions[Math.floor(Math.random() * 2)];
-      let x, y;
+      let x;
+      let y;
       do {
         x = Math.floor(Math.random() * 10);
         y = Math.floor(Math.random() * 10);
       } while (!this.myWater.addShip(ship, { x, y }, direction));
-    }
+    });
   }
 
   shoot(handleShoot) {
     let isShotValid = false;
     do {
-      let x = Math.floor(Math.random() * 10);
-      let y = Math.floor(Math.random() * 10);
-      let board = this.board();
+      const x = Math.floor(Math.random() * 10);
+      const y = Math.floor(Math.random() * 10);
+      const board = this.board();
       if (!board[x][y].shoot) {
         isShotValid = true;
         this.lastShoot = {
           x,
           y,
-          isHit: handleShoot(x, y) === 'x' ? true : false,
+          isHit: handleShoot(x, y) === 'x',
         };
       }
     } while (!isShotValid);
@@ -49,4 +46,3 @@ class BotPlayer extends Player {
 }
 
 exports.BotPlayer = BotPlayer;
-exports.Player = Player;

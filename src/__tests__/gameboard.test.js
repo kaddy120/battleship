@@ -1,6 +1,7 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { expect, test } = require('@jest/globals');
 const { Ship, ShipLength } = require('../ship');
 const Gameboard = require('../gameboard');
-const { expect, test } = require('@jest/globals');
 
 test('board is 10x10', () => {
   const gameboard = new Gameboard();
@@ -12,7 +13,7 @@ test('board is 10x10', () => {
 test('return true when ship is added', () => {
   const gameboard = new Gameboard();
 
-  let startPosition = {
+  const startPosition = {
     x: 0,
     y: 0,
   };
@@ -21,10 +22,10 @@ test('return true when ship is added', () => {
   const length = ShipLength.Cruiser;
   const ship = new Ship(length);
 
-  /* add a ship horizontally*/
+  /* add a ship horizontally */
   expect(gameboard.addShip(ship, startPosition, direction)).toBeTruthy();
 
-  /* add a ship vertically*/
+  /* add a ship vertically */
   startPosition.y = 1;
   direction = 'vertical';
   expect(gameboard.addShip(ship, startPosition, direction)).toBeTruthy();
@@ -33,12 +34,11 @@ test('return true when ship is added', () => {
 test('return false when adding a ship that is going out of the board', () => {
   const gameboard = new Gameboard();
 
-  let startPosition = {
+  const startPosition = {
     x: 5,
     y: 5,
   };
 
-  let direction = 'horizontal';
   const length = ShipLength.Carrier; // length is 5
   const ship = new Ship(length);
 
@@ -50,12 +50,12 @@ test('return false when adding a ship that is going out of the board', () => {
 test('return false when ships are overlaping', () => {
   const gameboard = new Gameboard();
 
-  let startPosition = {
+  const startPosition = {
     x: 0,
     y: 0,
   };
 
-  let direction = 'horizontal';
+  const direction = 'horizontal';
   const length = ShipLength.Cruiser;
   const ship = new Ship(length);
 
@@ -76,7 +76,7 @@ test('return "o" and mark the board with "o" when received attack miss the ship'
 test('return "x" and mark the board with "x" when received attack hits the ship', () => {
   const gameboard = new Gameboard();
 
-  let direction = 'horizontal';
+  const direction = 'horizontal';
   const length = ShipLength.Cruiser;
   const ship = new Ship(length);
 
@@ -100,7 +100,7 @@ test('return -1 when attacking a position already attacked', () => {
 test('return false if there are still operating ships on the board', () => {
   const gameboard = new Gameboard();
 
-  let direction = 'horizontal';
+  const direction = 'horizontal';
   const ship1 = new Ship(2);
   const ship2 = new Ship(2);
 
@@ -112,7 +112,7 @@ test('return false if there are still operating ships on the board', () => {
 test('return true if all ships in the board sunk', () => {
   const gameboard = new Gameboard();
 
-  let direction = 'horizontal';
+  const direction = 'horizontal';
   const ship1 = new Ship(2);
   const ship2 = new Ship(2);
 

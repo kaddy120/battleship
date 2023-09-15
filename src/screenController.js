@@ -1,11 +1,19 @@
 const GameController = require('./gameController');
 const { ShipLength } = require('./ship');
 
-const battleship = require('./assets/battleship.svg');
-const destroyer = require('./assets/destroyer.svg');
-const submarine = require('./assets/submarine.svg');
-const patrol = require('./assets/patrol.svg');
-const carrier = require('./assets/carrier.svg');
+const Carrier = require('./assets/carrier.svg');
+const Battleship = require('./assets/battleship.svg');
+const Destroyer = require('./assets/destroyer.svg');
+const Submarine = require('./assets/submarine.svg');
+const Patrol = require('./assets/patrol.svg');
+
+const shipIconPath = {
+  Battleship,
+  Destroyer,
+  Submarine,
+  Patrol,
+  Carrier,
+};
 
 class ScreenController {
   constructor() {
@@ -17,8 +25,7 @@ class ScreenController {
     this.direction = 'horizontal';
     this.rotateAxis = document.querySelector('#rotate-axis');
     this.rotateAxis.onclick = () => {
-      this.direction =
-        this.direction === 'horizontal' ? 'vertical' : 'horizontal';
+      this.direction = this.direction === 'horizontal' ? 'vertical' : 'horizontal';
     };
 
     this.game = new GameController();
@@ -45,7 +52,7 @@ class ScreenController {
             document
               .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
               .classList.add(className);
-          }
+          },
         );
       });
 
@@ -60,34 +67,29 @@ class ScreenController {
             document
               .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
               .classList.remove(className);
-          }
+          },
         );
       });
 
-      square.addEventListener('click', (event) => {
+      square.addEventListener('click', () => {
         const position = this.parseSquare(square);
         const name = this.shipNames[this.addingShip];
-        const path = carrier;
         const imgMetadata = {
           length: ShipLength[name],
           position,
           direction: this.direction,
-          path,
+          path: shipIconPath[name],
         };
-        /* this.addingShip += 1; */
         const player1Water = document.querySelector('.player-1');
         player1Water.appendChild(this.shipIcon(imgMetadata));
-
-        /* square.style.backgroundImage = `url('${submarine}')`; */
-        /* square.style.backgroundSize = 'cover'; */
+        this.addingShip += 1;
       });
     });
-    //First of all it will allow me to add ships.
   }
 
   // refactor this function to enable me to add, and remove highight
   // when you enter and leave square
-  highLightSquares(position, direction, length, handle) {
+  static highLightSquares(position, direction, length, handle) {
     const X = position.x;
     const Y = position.y;
 
@@ -96,6 +98,7 @@ class ScreenController {
         handle(X, Y, 'highlight-error');
         return;
       }
+      // eslint-disable-next-line no-plusplus
       for (let x = X; x < X + length && x < 10; x++) {
         handle(x, Y);
       }
@@ -104,15 +107,16 @@ class ScreenController {
         handle(X, Y, 'highlight-error');
         return;
       }
+      // eslint-disable-next-line no-plusplus
       for (let y = Y; y < Y + length && y < 10; y++) {
         handle(X, y);
       }
     }
   }
 
-  parseSquare(square) {
-    const x = parseInt(square.dataset.x);
-    const y = parseInt(square.dataset.y);
+  static parseSquare(square) {
+    const x = parseInt(square.dataset.x, 10);
+    const y = parseInt(square.dataset.y, 10);
     return { x, y };
   }
 
@@ -123,13 +127,7 @@ class ScreenController {
   // change the number of scquare that it shows,
   // when you rotate, change number of square hightlighted.
 
-  greeting() {
-    alert('hello world from a class');
-  }
-
-  addShips() {}
-
-  shipIcon(metadata) {
+  static shipIcon(metadata) {
     const { x, y } = metadata.position;
     const imgContainer = document.createElement('div');
     const img = new Image();
@@ -142,9 +140,10 @@ class ScreenController {
     imgContainer.style.gridRow = `${y + 1} /span 1`;
     imgContainer.style.gridColumn = `${x + 1} /span ${metadata.length}`;
     if (metadata.direction === 'vertical') {
+      /* TODO: Scale the image correctly when rotated */
       imgContainer.style.gridRow = `${y + 1} /span ${metadata.length}`;
       imgContainer.style.gridColumn = `${x + 1} /span 1`;
-      img.style.transform = 'rotate(90deg)'
+      img.style.transform = 'rotate(90deg)';
       /* img.style.height = '60px'; */
       /* img.style.width = '300px'; */
     }
@@ -152,7 +151,7 @@ class ScreenController {
     return imgContainer;
   }
 
-  createBoard(player) {
+  static createBoard(player) {
     const playerBoard = document.createElement('div');
     playerBoard.classList.add(player);
 

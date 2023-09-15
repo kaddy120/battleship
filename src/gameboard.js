@@ -1,26 +1,28 @@
 class Gameboard {
+  #ships = [];
+
+  #board = [];
+
   constructor() {
-    /* this._gameboard  */
-    this._createdboard();
-    this._ships = [];
+    this.#createdboard();
   }
 
   addShip(ship, startPosition, direction) {
-    if (!this._isPositionAvailable(startPosition, direction, ship.length())) {
+    if (!this.#isPositionAvailable(startPosition, direction, ship.length())) {
       return false;
     }
 
     const X = startPosition.x;
     const Y = startPosition.y;
-    this._ships.push(ship);
+    this.#ships.push(ship);
 
     if (direction === 'horizontal') {
       for (let x = X; x < X + ship.length(); x++) {
-        this._board[x][Y] = { shoot: null, ship };
+        this.#board[x][Y] = { shoot: null, ship };
       }
     } else if ((direction === 'vertical')) {
       for (let y = Y; y < Y + ship.length(); y++) {
-        this._board[X][y] = { shoot: null, ship };
+        this.#board[X][y] = { shoot: null, ship };
       }
     }
     return true;
@@ -28,13 +30,13 @@ class Gameboard {
 
   allShipsSunk() {
     let isAllShipSunk = true;
-    this._ships.forEach(ship => {
-      if(!ship.isSunk()) isAllShipSunk = false;
-    })
+    this.#ships.forEach((ship) => {
+      if (!ship.isSunk()) isAllShipSunk = false;
+    });
     return isAllShipSunk;
   }
 
-  _isPositionAvailable(startPosition, direction, length) {
+  #isPositionAvailable(startPosition, direction, length) {
     const X = startPosition.x;
     const Y = startPosition.y;
 
@@ -42,22 +44,22 @@ class Gameboard {
       if (X + length >= 10) return false;
 
       for (let x = X; x < X + length; x++) {
-        if (this._board[x][Y].ship) return false;
+        if (this.#board[x][Y].ship) return false;
       }
     } else if ((direction === 'vertical')) {
       if (Y + length >= 10) return false;
 
       for (let y = Y; y < Y + length; y++) {
-        if (this._board[X][y].ship) return false;
+        if (this.#board[X][y].ship) return false;
       }
     }
     return true;
   }
 
-  getBoard = () => this._board;
+  getBoard = () => this.#board;
 
   receiveAttack(x, y) {
-    let square = this._board[x][y];
+    const square = this.#board[x][y];
     if (square.shoot) return -1;
 
     if (square.ship) {
@@ -69,16 +71,15 @@ class Gameboard {
     return square.shoot;
   }
 
-  _createdboard() {
+  #createdboard() {
     const rows = 10;
     const columns = 10;
-    this._board = [];
     for (let i = 0; i < rows; i++) {
       const row = [];
       for (let j = 0; j < columns; j++) {
         row.push({ shoot: null, ship: null });
       }
-      this._board.push(row);
+      this.#board.push(row);
     }
   }
 }
