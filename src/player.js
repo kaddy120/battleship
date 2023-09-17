@@ -1,22 +1,25 @@
 const { Ship, ShipLength } = require('./ship');
 
 class BotPlayer {
-  constructor(getBoard, myWater) {
+  #shootHistory = [];
+
+  constructor(myWater) {
     /* The problem is that a board has record of the ship position */
-    this.board = getBoard;
+    /* this.board = getBoard; */
     this.myWater = myWater;
     this.lastShoot = {
       x: null,
       y: null,
       isHit: false,
     };
+    this.#createShootHistoryBoard();
   }
 
   placeShips() {
     const directions = ['horizontal', 'vertical'];
 
     Object.entries(ShipLength).forEach((value) => {
-      const ship = new Ship(value[0], value[1]);
+      const ship = new Ship(value[1], value[0]);
       const direction = directions[Math.floor(Math.random() * 2)];
       let x;
       let y;
@@ -27,12 +30,26 @@ class BotPlayer {
     });
   }
 
+  #createShootHistoryBoard() {
+    const rows = 10;
+    const columns = 10;
+    for (let i = 0; i < rows; i++) {
+      const row = [];
+      for (let j = 0; j < columns; j++) {
+        row.push({ shoot: null });
+      }
+      this.#shootHistory.push(row);
+    }
+  }
+
   shoot(handleShoot) {
     let isShotValid = false;
+    let x;
+    let y;
     do {
-      const x = Math.floor(Math.random() * 10);
-      const y = Math.floor(Math.random() * 10);
-      const board = this.board();
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+      const board = this.#shootHistory;
       if (!board[x][y].shoot) {
         isShotValid = true;
         this.lastShoot = {
@@ -42,6 +59,7 @@ class BotPlayer {
         };
       }
     } while (!isShotValid);
+    this.#shootHistory[x][y] = this.lastShoot.isHit ? 'x' : 'y';
   }
 }
 

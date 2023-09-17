@@ -24,11 +24,23 @@ test('return true when ship is added', () => {
 
   /* add a ship horizontally */
   expect(gameboard.addShip(ship, startPosition, direction)).toBeTruthy();
-
   /* add a ship vertically */
   startPosition.y = 1;
   direction = 'vertical';
   expect(gameboard.addShip(ship, startPosition, direction)).toBeTruthy();
+});
+
+test('added ship is stored in the board', () => {
+  const ship = new Ship(5);
+  const direction = 'horizontal';
+  const gameboard = new Gameboard();
+  expect(gameboard.addShip(ship, { x: 1, y: 2 }, direction)).toBeTruthy();
+  const board = gameboard.getBoard();
+  expect(board[1][2].ship).toBe(ship);
+  expect(board[2][2].ship).toBe(ship);
+  expect(board[3][2].ship).toBe(ship);
+  expect(board[4][2].ship).toBe(ship);
+  expect(board[5][2].ship).toBe(ship);
 });
 
 test('return false when adding a ship that is going out of the board', () => {

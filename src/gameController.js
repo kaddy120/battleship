@@ -1,27 +1,34 @@
 const { BotPlayer } = require('./player');
 const Gameboard = require('./gameboard');
 
-// players turns
-// Think about calling game controller in the terminal, and
-// then start calling the functions by name to play the game.
-// randomly place bood ships in position;
-//
 class GameController {
   player1Water = new Gameboard();
 
   player2Water = new Gameboard();
 
-  botPlayer = new BotPlayer(() => this.player1Waters.getBoard());
+  botPlayer = new BotPlayer(this.player2Water, () => this.player2Water.getBoard());
 
-  play(x, y) {
+  constructor() {
+    this.botPlayer.placeShips();
+  }
+
+  addShip(ship, startPosition, dir) {
+    return this.player1Water.addShip(ship, startPosition, dir);
+  }
+
+  play(position) {
+    const { x, y } = position;
     /* get move from human */
-    if (this.player2Water.receiveAttack(x, y) !== -1) {
+    const status = this.player2Water.receiveAttack(x, y);
+    if (status !== -1) {
       this.botPlayer.shoot(this.#handleShoot);
     }
+
+    return status;
     /* then make a move for a bot */
   }
 
-  #handleShoot = (x, y) => this.player1Waters.receiveAttack(x, y);
+  #handleShoot = (x, y) => this.player1Water.receiveAttack(x, y);
 
   isGameOver = () => this.player2Water.allShipsSunk() || this.player1Water.allShipsSunk();
 

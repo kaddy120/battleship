@@ -14,8 +14,8 @@ class Gameboard {
 
     const X = startPosition.x;
     const Y = startPosition.y;
-    this.#ships.push(ship);
 
+    this.#ships.push(ship);
     if (direction === 'horizontal') {
       for (let x = X; x < X + ship.length(); x++) {
         this.#board[x][Y] = { shoot: null, ship };
@@ -36,6 +36,24 @@ class Gameboard {
     return isAllShipSunk;
   }
 
+  getBoard = () => this.#board;
+
+  get ships() { return this.#ships; }
+
+  receiveAttack(x, y) {
+    const square = this.#board[x][y];
+    if (square.shoot) return -1;
+
+    if (square.ship) {
+      square.shoot = 'x';
+      square.ship.hit();
+      return square.shoot;
+    }
+
+    square.shoot = 'o';
+    return square.shoot;
+  }
+
   #isPositionAvailable(startPosition, direction, length) {
     const X = startPosition.x;
     const Y = startPosition.y;
@@ -54,21 +72,6 @@ class Gameboard {
       }
     }
     return true;
-  }
-
-  getBoard = () => this.#board;
-
-  receiveAttack(x, y) {
-    const square = this.#board[x][y];
-    if (square.shoot) return -1;
-
-    if (square.ship) {
-      square.shoot = 'x';
-      square.ship.hit();
-      return 'x';
-    }
-    square.shoot = 'o';
-    return square.shoot;
   }
 
   #createdboard() {
