@@ -3,11 +3,13 @@ const { Ship, ShipLength } = require('./ship');
 class BotPlayer {
   #shootHistory = [];
 
+  #lastShoot = {};
+
   constructor(myWater) {
     /* The problem is that a board has record of the ship position */
     /* this.board = getBoard; */
     this.myWater = myWater;
-    this.lastShoot = {
+    this.#lastShoot = {
       x: null,
       y: null,
       isHit: false,
@@ -42,6 +44,10 @@ class BotPlayer {
     }
   }
 
+  get lastShoot() {
+    return this.#lastShoot;
+  }
+
   shoot(handleShoot) {
     let isShotValid = false;
     let x;
@@ -52,14 +58,15 @@ class BotPlayer {
       const board = this.#shootHistory;
       if (!board[x][y].shoot) {
         isShotValid = true;
-        this.lastShoot = {
+        this.#lastShoot = {
           x,
           y,
           isHit: handleShoot(x, y) === 'x',
         };
+        board[x][y].shoot = true;
       }
     } while (!isShotValid);
-    this.#shootHistory[x][y] = this.lastShoot.isHit ? 'x' : 'y';
+    this.#shootHistory[x][y] = this.#lastShoot.isHit ? 'x' : 'y';
   }
 }
 

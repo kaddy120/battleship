@@ -18,6 +18,12 @@ class Square {
     return playerBoard;
   }
 
+  static findSquare(boardClass, position) {
+    return document.querySelector(
+      `.${boardClass} [data-index="${position.x * position.y}"]`,
+    );
+  }
+
   static parse(square) {
     const x = parseInt(square.dataset.x, 10);
     const y = parseInt(square.dataset.y, 10);
