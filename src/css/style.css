@@ -4,7 +4,16 @@ body {
 
 .water-container {
   display: flex;
+  justify-content: center;
   width: 100%;
+}
+
+h3{
+  text-align: center;
+}
+
+button{
+  margin-inline: auto;
 }
 
 .player-1,
@@ -33,6 +42,27 @@ body {
   background: red;
 }
 
-.hide{
+
+.game-title {
+  font-family: 'Big Shoulders Stencil Text', cursive;
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 0.25rem;
+  text-align: center;
+  margin-block: 2rem;
+}
+
+.container {
+  margin-inline: auto;
+}
+
+.placing-ship{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: 1.75rem;
+}
+
+.hide {
   display: none;
 }

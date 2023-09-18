@@ -78,6 +78,7 @@ class SplashScreen {
 
       // remove event listener after adding all ships
       if (this.addingShip === 5) {
+        document.querySelector('.placing-ship').classList.add('hide');
         this.player2Board.classList.remove('hide');
         this.player1Squares.forEach((square) => {
           square.removeEventListener('click', this.handleAddShip);
