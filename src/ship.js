@@ -2,7 +2,7 @@
 const ShipLength = {
   Carrier: 5,
   Battleship: 4,
-  Cruiser: 3,
+  Patrol: 3,
   Submarine: 3,
   Destroyer: 2,
 };
