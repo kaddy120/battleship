@@ -16,11 +16,11 @@ class Gameboard {
     const Y = startPosition.y;
 
     this.#ships.push(ship);
-    if (direction === 'horizontal') {
+    if (direction === 'x') {
       for (let x = X; x < X + ship.length(); x++) {
         this.#board[x][Y] = { shoot: null, ship };
       }
-    } else if ((direction === 'vertical')) {
+    } else if ((direction === 'y')) {
       for (let y = Y; y < Y + ship.length(); y++) {
         this.#board[X][y] = { shoot: null, ship };
       }
@@ -58,13 +58,13 @@ class Gameboard {
     const X = startPosition.x;
     const Y = startPosition.y;
 
-    if (direction === 'horizontal') {
+    if (direction === 'x') {
       if (X + length >= 10) return false;
 
       for (let x = X; x < X + length; x++) {
         if (this.#board[x][Y].ship) return false;
       }
-    } else if ((direction === 'vertical')) {
+    } else if ((direction === 'y')) {
       if (Y + length >= 10) return false;
 
       for (let y = Y; y < Y + length; y++) {

@@ -34,7 +34,7 @@ class Square {
     const X = position.x;
     const Y = position.y;
 
-    if (direction === 'horizontal') {
+    if (direction === 'x') {
       if (X + length > 10) {
         handle(X, Y, 'highlight-error');
         return;
@@ -43,7 +43,7 @@ class Square {
       for (let x = X; x < X + length && x < 10; x++) {
         handle(x, Y);
       }
-    } else if (direction === 'vertical') {
+    } else if (direction === 'y') {
       if (Y + length > 10) {
         handle(X, Y, 'highlight-error');
         return;

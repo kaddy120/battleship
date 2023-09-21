@@ -18,7 +18,7 @@ class BotPlayer {
   }
 
   placeShips() {
-    const directions = ['horizontal', 'vertical'];
+    const directions = ['x', 'y'];
 
     Object.entries(ShipLength).forEach((value) => {
       const ship = new Ship(value[1], value[0]);

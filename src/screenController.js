@@ -9,14 +9,13 @@ class ScreenController {
 
   waterContainer = document.createElement('div');
 
-  player2Squares = document.querySelectorAll('.player-2 .square');
-
   constructor() {
     this.waterContainer.classList.add('water-container');
     this.waterContainer.appendChild(Square.createBoard('player-1'));
     this.waterContainer.appendChild(Square.createBoard('player-2'));
     this.content.appendChild(this.waterContainer);
 
+    this.player2Squares = document.querySelectorAll('.player-2 .square');
     this.splashScreen = new SplashScreen(this.game);
     this.splashScreen.show();
   }
@@ -44,3 +43,7 @@ class ScreenController {
 }
 
 module.exports = ScreenController;
+
+function kaddy(phidza, zangalelo, marindi) {
+
+}

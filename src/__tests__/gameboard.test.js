@@ -18,21 +18,21 @@ test('return true when ship is added', () => {
     y: 0,
   };
 
-  let direction = 'horizontal';
-  const length = ShipLength.Cruiser;
+  let direction = 'x';
+  const length = ShipLength.Battleship;
   const ship = new Ship(length);
 
-  /* add a ship horizontally */
+  /* add a ship xly */
   expect(gameboard.addShip(ship, startPosition, direction)).toBeTruthy();
-  /* add a ship vertically */
+  /* add a ship yly */
   startPosition.y = 1;
-  direction = 'vertical';
+  direction = 'y';
   expect(gameboard.addShip(ship, startPosition, direction)).toBeTruthy();
 });
 
 test('added ship is stored in the board', () => {
   const ship = new Ship(5);
-  const direction = 'horizontal';
+  const direction = 'x';
   const gameboard = new Gameboard();
   expect(gameboard.addShip(ship, { x: 1, y: 2 }, direction)).toBeTruthy();
   const board = gameboard.getBoard();
@@ -54,9 +54,9 @@ test('return false when adding a ship that is going out of the board', () => {
   const length = ShipLength.Carrier; // length is 5
   const ship = new Ship(length);
 
-  expect(gameboard.addShip(ship, startPosition, 'horizontal')).toBeFalsy();
+  expect(gameboard.addShip(ship, startPosition, 'x')).toBeFalsy();
   startPosition.x = 4;
-  expect(gameboard.addShip(ship, startPosition, 'vertical')).toBeFalsy();
+  expect(gameboard.addShip(ship, startPosition, 'y')).toBeFalsy();
 });
 
 test('return false when ships are overlaping', () => {
@@ -67,12 +67,12 @@ test('return false when ships are overlaping', () => {
     y: 0,
   };
 
-  const direction = 'horizontal';
-  const length = ShipLength.Cruiser;
+  const direction = 'x';
+  const length = ShipLength.Battleship;
   const ship = new Ship(length);
 
   gameboard.addShip(ship, startPosition, direction);
-  expect(gameboard.addShip(ship, startPosition, 'vertical')).toBeFalsy();
+  expect(gameboard.addShip(ship, startPosition, 'y')).toBeFalsy();
 
   startPosition.x += length - 1;
   expect(gameboard.addShip(ship, startPosition, direction)).toBeFalsy();
@@ -88,8 +88,8 @@ test('return "o" and mark the board with "o" when received attack miss the ship'
 test('return "x" and mark the board with "x" when received attack hits the ship', () => {
   const gameboard = new Gameboard();
 
-  const direction = 'horizontal';
-  const length = ShipLength.Cruiser;
+  const direction = 'x';
+  const length = ShipLength.Battleship;
   const ship = new Ship(length);
 
   gameboard.addShip(ship, { x: 0, y: 0 }, direction);
@@ -112,7 +112,7 @@ test('return -1 when attacking a position already attacked', () => {
 test('return false if there are still operating ships on the board', () => {
   const gameboard = new Gameboard();
 
-  const direction = 'horizontal';
+  const direction = 'x';
   const ship1 = new Ship(2);
   const ship2 = new Ship(2);
 
@@ -124,7 +124,7 @@ test('return false if there are still operating ships on the board', () => {
 test('return true if all ships in the board sunk', () => {
   const gameboard = new Gameboard();
 
-  const direction = 'horizontal';
+  const direction = 'x';
   const ship1 = new Ship(2);
   const ship2 = new Ship(2);
 

@@ -1,5 +1,5 @@
-const { Ship, ShipLength } = require('../ship');
 const { expect, test } = require('@jest/globals');
+const { Ship, ShipLength } = require('../ship');
 
 /* Ship Object includes
  * - length
@@ -18,7 +18,7 @@ test('Ship', () => {
 });
 
 test('ship sink if hit as much as ship length', () => {
-  const length = ShipLength.Cruiser;
+  const length = ShipLength.Patrol;
   const ship1 = new Ship(length);
 
   for (let index = 0; index < length; index++) {

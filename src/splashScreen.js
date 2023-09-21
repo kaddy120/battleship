@@ -1,9 +1,9 @@
 const Square = require('./boardSquare');
-const { shipIcon, shipIconPath } = require('./icon');
+const { renderIcon } = require('./components/icon');
 const { ShipLength, Ship } = require('./ship');
 
 class SplashScreen {
-  direction = 'horizontal';
+  direction = 'x';
 
   shipNames = Object.keys(ShipLength);
 
@@ -20,7 +20,7 @@ class SplashScreen {
   constructor(game) {
     this.game = game;
     this.rotateAxis.onclick = () => {
-      this.direction = this.direction === 'horizontal' ? 'vertical' : 'horizontal';
+      this.direction = this.direction === 'x' ? 'y' : 'x';
     };
     this.player2Board.classList.add('hide');
     this.handleAddShip = this.handleAddShip.bind(this);
@@ -73,10 +73,12 @@ class SplashScreen {
         length: ShipLength[name],
         position,
         direction: this.direction,
-        path: shipIconPath[name],
+        axis: 'y',
+        sunk: 'sunk',
+        name,
       };
       const player1Water = document.querySelector('.player-1');
-      player1Water.appendChild(shipIcon(imgMetadata));
+      player1Water.appendChild(renderIcon(imgMetadata));
 
       // redudently unhilight the squares (of ship length) before shipNumber is incremented
       // below. Because once shipNumber changes, the ship length we can access with this
