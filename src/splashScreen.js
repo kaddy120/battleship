@@ -72,9 +72,8 @@ class SplashScreen {
       const imgMetadata = {
         length: ShipLength[name],
         position,
-        direction: this.direction,
-        axis: 'y',
-        sunk: 'sunk',
+        axis: this.direction,
+        sunk: ship.isSunk(),
         name,
       };
       const player1Water = document.querySelector('.player-1');

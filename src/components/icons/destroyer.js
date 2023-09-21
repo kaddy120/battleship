@@ -5,7 +5,7 @@ xmlns='http://www.w3.org/2000/svg'
 width='100%'
 height='100%'
 viewBox="${axis === 'x' ? '0 0 153 69' : '0 0 69 153'}"
-fill="${sunk === 'sunk' ? 'grey' : 'skyblue'}"
+fill="${sunk === false ? 'grey' : 'skyblue'}"
 preserveAspectRatio='none'
 ><path transform="${
   axis === 'y' ? 'rotate(90, 35, 35)' : ''

@@ -3,7 +3,7 @@ module.exports = function carrier(props) {
   return `<svg
 xmlu s='http://www.w3.org/2000/svg' width='100%' height='100%'
 viewBox="${axis === 'x' ? '0 0 299 95' : '0 0 95 299'}" 
-fill="${sunk === 'sunk' ? 'grey' : 'skyblue'}" 
+fill="${sunk === false ? 'grey' : 'skyblue'}" 
 preserveAspectRatio='none' >
 <path transform="${
   axis === 'y' ? 'rotate' : ''

@@ -24,7 +24,7 @@ function shipIconComponent() {
     imgContainer.style.zIndex = 2;
     imgContainer.style.gridRow = `${y + 1} /span 1`;
     imgContainer.style.gridColumn = `${x + 1} /span ${metadata.length}`;
-    if (metadata.direction === 'y') {
+    if (metadata.axis === 'y') {
       imgContainer.style.gridRow = `${y + 1} /span ${metadata.length}`;
       imgContainer.style.gridColumn = `${x + 1} /span 1`;
     }
