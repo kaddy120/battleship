@@ -1,4 +1,3 @@
-const { expect, test } = require('@jest/globals');
 const { Ship, ShipLength } = require('../ship');
 
 /* Ship Object includes

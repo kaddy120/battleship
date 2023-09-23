@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { beforeEach, expect, test, describe } = require('@jest/globals');
 const { ShipLength } = require('../ship');
 const Gameboard = require('../gameboard');
 const { BotPlayer } = require('../player');
@@ -8,7 +6,7 @@ test('botPlayer', () => {
   const player1Waters = new Gameboard();
   const botPlayer = new BotPlayer(
     () => player1Waters.getBoard(),
-    player1Waters
+    player1Waters,
   );
   botPlayer.shoot((x, y) => player1Waters.receiveAttack(x, y));
   const board = player1Waters.getBoard();
@@ -37,7 +35,7 @@ test('randomly add all ships to botPlayers board', () => {
 
   expect(total).toBe(17);
   expect(shipCount).toBe(total);
-  expect(botWaters.ships.length).toBe(5);
+  expect(botWaters.ships).toHaveLength(5);
 });
 
 function countShoots(board) {
@@ -58,7 +56,7 @@ describe('botPlayer shooting', () => {
   const bot = new BotPlayer(myWater);
   const handleShoot = (x, y) => enemyWater.receiveAttack(x, y);
 
-  beforeEach(() => {
+  afterEach(() => {
     enemyWater.clearBoard();
     bot.clearHistory();
   });

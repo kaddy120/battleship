@@ -1,13 +1,13 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect, test } = require('@jest/globals');
 const { Ship, ShipLength } = require('../ship');
 const Gameboard = require('../gameboard');
 
-test('board is 10x10', () => {
+test('board size is 10x10', () => {
   const gameboard = new Gameboard();
   const board = gameboard.getBoard();
-  expect(board.length).toBe(10);
-  expect(board[0].length).toBe(10);
+  expect(board).toHaveLength(10);
+  board.forEach((row) => {
+    expect(row).toHaveLength(10);
+  });
 });
 
 test('return true when ship is added', () => {
