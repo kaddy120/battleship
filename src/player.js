@@ -17,6 +17,11 @@ class BotPlayer {
     this.#createShootHistoryBoard();
   }
 
+  clearHistory() {
+    this.#shootHistory = [];
+    this.#createShootHistoryBoard();
+  }
+
   placeShips() {
     const directions = ['x', 'y'];
 
@@ -38,7 +43,7 @@ class BotPlayer {
     for (let i = 0; i < rows; i++) {
       const row = [];
       for (let j = 0; j < columns; j++) {
-        row.push({ shoot: null });
+        row.push(null);
       }
       this.#shootHistory.push(row);
     }
@@ -52,18 +57,18 @@ class BotPlayer {
     let isShotValid = false;
     let x;
     let y;
+    const board = this.#shootHistory;
     do {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-      const board = this.#shootHistory;
-      if (!board[x][y].shoot) {
+      if (!board[x][y]) {
         isShotValid = true;
         this.#lastShoot = {
           x,
           y,
           isHit: handleShoot(x, y) === 'x',
         };
-        board[x][y].shoot = true;
+        board[x][y] = true;
       }
     } while (!isShotValid);
     this.#shootHistory[x][y] = this.#lastShoot.isHit ? 'x' : 'y';

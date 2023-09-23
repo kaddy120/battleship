@@ -20,7 +20,7 @@ class Gameboard {
       for (let x = X; x < X + ship.length(); x++) {
         this.#board[x][Y] = { shoot: null, ship };
       }
-    } else if ((direction === 'y')) {
+    } else if (direction === 'y') {
       for (let y = Y; y < Y + ship.length(); y++) {
         this.#board[X][y] = { shoot: null, ship };
       }
@@ -38,7 +38,9 @@ class Gameboard {
 
   getBoard = () => this.#board;
 
-  get ships() { return this.#ships; }
+  get ships() {
+    return this.#ships;
+  }
 
   receiveAttack(x, y) {
     const square = this.#board[x][y];
@@ -64,7 +66,7 @@ class Gameboard {
       for (let x = X; x < X + length; x++) {
         if (this.#board[x][Y].ship) return false;
       }
-    } else if ((direction === 'y')) {
+    } else if (direction === 'y') {
       if (Y + length >= 10) return false;
 
       for (let y = Y; y < Y + length; y++) {
@@ -84,6 +86,12 @@ class Gameboard {
       }
       this.#board.push(row);
     }
+  }
+
+  clearBoard() {
+    this.#ships = [];
+    this.#board = [];
+    this.#createdboard();
   }
 }
 
