@@ -3,8 +3,9 @@ module.exports = {
     browser: true,
     commonjs: true,
     es2021: true,
+    'jest/globals': true,
   },
-  extends: ['eslint:recommended', 'airbnb-base'],
+  extends: ['eslint:recommended', 'airbnb-base', 'plugin:jest/style'],
   overrides: [
     {
       env: {
@@ -15,11 +16,22 @@ module.exports = {
         sourceType: 'script',
       },
     },
+    {
+      files: ['src/__test__/**'],
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended'],
+      rules: { 'jest/prefer-expect-assertions': 'off' },
+    },
   ],
   parserOptions: {
     ecmaVersion: 'latest',
   },
   rules: {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+    'jest/no-disabled-tests': 'warn',
+    'jest/no-focused-tests': 'error',
+    'jest/no-identical-title': 'error',
+    'jest/prefer-to-have-length': 'warn',
+    'jest/valid-expect': 'error',
   },
 };
