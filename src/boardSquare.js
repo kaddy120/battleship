@@ -20,7 +20,8 @@ class Square {
 
   static findSquare(boardClass, position) {
     return document.querySelector(
-      `.${boardClass} [data-index="${position.x * position.y}"]`,
+      `.${boardClass} [data-index="${position.x + position.y * 10}"]`,
+      false
     );
   }
 
