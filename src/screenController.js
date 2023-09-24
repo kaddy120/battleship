@@ -1,6 +1,7 @@
 const GameController = require('./gameController');
 const Square = require('./boardSquare');
 const SplashScreen = require('./splashScreen');
+const shotMarker = require('./components/icons/shotMarker');
 
 class ScreenController {
   content = document.querySelector('#content');
@@ -30,18 +31,17 @@ class ScreenController {
 
         const position = Square.parse(square);
         const shot = this.game.play(position);
-        if (shot.human.status === 'x') {
-          // eslint-disable-next-line no-param-reassign
-          square.innerHTML = 'x';
-        } else if (shot.human.status === 'o') {
-          // eslint-disable-next-line no-param-reassign
-          square.innerHTML = 'o';
-        }
+
+        // eslint-disable-next-line no-param-reassign
+        square.innerHTML = shotMarker(shot.human.isHit);
         await this.thinking(1000);
         const botShot = shot.bot;
-        const postion = { x: botShot.x, y: botShot.y };
-        const botSquareShot = Square.findSquare('player-1', postion);
-        botSquareShot.innerHTML = botShot.isHit ? 'x' : 'o';
+
+        const botSquareShot = Square.findSquare('player-1', {
+          x: botShot.x,
+          y: botShot.y,
+        });
+        botSquareShot.innerHTML = shotMarker(botShot.isHit);
       });
     });
   }

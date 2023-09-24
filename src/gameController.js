@@ -6,7 +6,7 @@ class GameController {
 
   player2Water = new Gameboard();
 
-  botPlayer = new BotPlayer(this.player2Water, () => this.player2Water.getBoard());
+  botPlayer = new BotPlayer(this.player2Water);
 
   constructor() {
     this.botPlayer.placeShips();
@@ -19,20 +19,20 @@ class GameController {
   play(position) {
     const { x, y } = position;
     /* get move from human */
-    const status = this.player2Water.receiveAttack(x, y);
-    let botLastShotStatus;
-    if (status !== -1) {
+    const marker = this.player2Water.receiveAttack(x, y);
+    if (marker !== -1) {
       this.botPlayer.shot(this.#handleShot);
-      botLastShotStatus = this.botPlayer.lastShot;
     }
 
-    return { human: { status }, bot: botLastShotStatus };
+    return { human: { isHit: marker === 'x' }, bot: this.botPlayer.lastShot };
     /* then make a move for a bot */
   }
 
   #handleShot = (x, y) => this.player1Water.receiveAttack(x, y);
 
-  isGameOver = () => this.player2Water.allShipsSunk() || this.player1Water.allShipsSunk();
+  isGameOver() {
+    return this.player2Water.allShipsSunk() || this.player1Water.allShipsSunk();
+  }
 
   winner() {
     if (this.isGameOver()) {
