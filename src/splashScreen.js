@@ -1,15 +1,12 @@
 const Square = require('./boardSquare');
 const { renderIcon } = require('./components/icon');
+const RotateAxis = require('./components/rotateAxis');
 const { ShipLength, Ship } = require('./ship');
 
 class SplashScreen {
-  direction = 'x';
-
   shipNames = Object.keys(ShipLength);
 
   shipNumber = 0;
-
-  rotateAxis = document.querySelector('#rotate-axis');
 
   player1Squares = document.querySelectorAll('.player-1 .square');
 
@@ -18,10 +15,8 @@ class SplashScreen {
   shipName = document.querySelector('.ship-name');
 
   constructor(game) {
+    this.getDirection = RotateAxis();
     this.game = game;
-    this.rotateAxis.onclick = () => {
-      this.direction = this.direction === 'x' ? 'y' : 'x';
-    };
     this.player2Board.classList.add('hide');
     this.handleAddShip = this.handleAddShip.bind(this);
   }
@@ -33,13 +28,13 @@ class SplashScreen {
         const name = this.shipNames[this.shipNumber];
         Square.highLightSquares(
           position,
-          this.direction,
+          this.getDirection(),
           ShipLength[name],
           (x, y, className = 'highlight') => {
             document
               .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
               .classList.add(className);
-          },
+          }
         );
       });
 
@@ -48,13 +43,13 @@ class SplashScreen {
         const name = this.shipNames[this.shipNumber];
         Square.highLightSquares(
           position,
-          this.direction,
+          this.getDirection(),
           ShipLength[name],
           (x, y, className = 'highlight') => {
             document
               .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
               .classList.remove(className);
-          },
+          }
         );
       });
 
@@ -64,15 +59,15 @@ class SplashScreen {
 
   handleAddShip(event) {
     const position = Square.parse(event.target);
-    const name = this.shipNames[this.shipNumber];
+    let name = this.shipNames[this.shipNumber];
     this.shipName.innerHTML = name;
 
     const ship = new Ship(ShipLength[name], name);
-    if (this.game.addShip(ship, position, this.direction)) {
+    if (this.game.addShip(ship, position, this.getDirection())) {
       const imgMetadata = {
         length: ShipLength[name],
         position,
-        axis: this.direction,
+        axis: this.getDirection(),
         sunk: ship.isSunk(),
         name,
       };
@@ -85,21 +80,27 @@ class SplashScreen {
       // mouseleave eventhandler.
       Square.highLightSquares(
         position,
-        this.direction,
+        this.getDirection(),
         ShipLength[name],
         (x, y, className = 'highlight') => {
           document
             .querySelector(`.player-1 [data-index="${y * 10 + x}"]`)
             .classList.remove(className);
-        },
+        }
       );
 
       this.shipNumber += 1;
 
+      name = this.shipNames[this.shipNumber];
+      this.shipName.innerHTML = name;
+
       // after adding all 5 ships, do:
       if (this.shipNumber === 5) {
         // 1. hide and show ui for adding ship and enemy board, respectively.
-        document.querySelector('.placing-ship').classList.add('hide');
+        SplashScreen.hideElement('rotate-axis');
+        SplashScreen.hideElement('ship-sunk');
+
+        document.getElementById('game-status').innerHTML = 'player 1 turn';
         this.player2Board.classList.remove('hide');
 
         // 2. remove click event listner for adding ships in every square.
@@ -108,6 +109,10 @@ class SplashScreen {
         });
       }
     }
+  }
+
+  static hideElement(id) {
+    document.getElementById(id).classList.add('hide');
   }
 }
 

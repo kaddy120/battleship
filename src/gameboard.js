@@ -36,6 +36,11 @@ class Gameboard {
     return isAllShipSunk;
   }
 
+  shipSunk(position) {
+    const { x, y } = position;
+    return this.#board[x][y].ship?.isSunk() || false;
+  }
+
   getBoard = () => this.#board;
 
   get ships() {

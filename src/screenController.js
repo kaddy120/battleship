@@ -28,7 +28,6 @@ class ScreenController {
         const position = Square.parse(square);
         const shot = this.game.play(position);
 
-        // eslint-disable-next-line no-param-reassign
         square.innerHTML = shotMarker(shot.human.isHit);
         await thinking(800);
         const botShot = shot.bot;
