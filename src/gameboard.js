@@ -18,11 +18,11 @@ class Gameboard {
     this.#ships.push(ship);
     if (direction === 'x') {
       for (let x = X; x < X + ship.length(); x++) {
-        this.#board[x][Y] = { shoot: null, ship };
+        this.#board[x][Y] = { shot: null, ship };
       }
     } else if (direction === 'y') {
       for (let y = Y; y < Y + ship.length(); y++) {
-        this.#board[X][y] = { shoot: null, ship };
+        this.#board[X][y] = { shot: null, ship };
       }
     }
     return true;
@@ -44,16 +44,16 @@ class Gameboard {
 
   receiveAttack(x, y) {
     const square = this.#board[x][y];
-    if (square.shoot) return -1;
+    if (square.shot) return -1;
 
     if (square.ship) {
-      square.shoot = 'x';
+      square.shot = 'x';
       square.ship.hit();
-      return square.shoot;
+      return square.shot;
     }
 
-    square.shoot = 'o';
-    return square.shoot;
+    square.shot = 'o';
+    return square.shot;
   }
 
   #isPositionAvailable(startPosition, direction, length) {
@@ -82,7 +82,7 @@ class Gameboard {
     for (let i = 0; i < rows; i++) {
       const row = [];
       for (let j = 0; j < columns; j++) {
-        row.push({ shoot: null, ship: null });
+        row.push({ shot: null, ship: null });
       }
       this.#board.push(row);
     }

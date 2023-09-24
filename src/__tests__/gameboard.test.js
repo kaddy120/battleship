@@ -82,7 +82,7 @@ test('return "o" and mark the board with "o" when received attack miss the ship'
   const gameboard = new Gameboard();
   expect(gameboard.receiveAttack(0, 0)).toBe('o');
   const board = gameboard.getBoard();
-  expect(board[0][0].shoot).toBe('o');
+  expect(board[0][0].shot).toBe('o');
 });
 
 test('return "x" and mark the board with "x" when received attack hits the ship', () => {
@@ -96,11 +96,11 @@ test('return "x" and mark the board with "x" when received attack hits the ship'
 
   expect(gameboard.receiveAttack(0, 0)).toBe('x');
   let board = gameboard.getBoard();
-  expect(board[0][0].shoot).toBe('x');
+  expect(board[0][0].shot).toBe('x');
 
   expect(gameboard.receiveAttack(2, 0)).toBe('x');
   board = gameboard.getBoard();
-  expect(board[0][0].shoot).toBe('x');
+  expect(board[0][0].shot).toBe('x');
 });
 
 test('return -1 when attacking a position already attacked', () => {

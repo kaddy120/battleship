@@ -29,19 +29,19 @@ class ScreenController {
         if (this.#botThinking) return;
 
         const position = Square.parse(square);
-        const shoot = this.game.play(position);
-        if (shoot.human.status === 'x') {
+        const shot = this.game.play(position);
+        if (shot.human.status === 'x') {
           // eslint-disable-next-line no-param-reassign
           square.innerHTML = 'x';
-        } else if (shoot.human.status === 'o') {
+        } else if (shot.human.status === 'o') {
           // eslint-disable-next-line no-param-reassign
           square.innerHTML = 'o';
         }
         await this.thinking(1000);
-        const botShoot = shoot.bot;
-        const postion = { x: botShoot.x, y: botShoot.y };
-        const botSquareShoot = Square.findSquare('player-1', postion);
-        botSquareShoot.innerHTML = botShoot.isHit ? 'x' : 'o';
+        const botShot = shot.bot;
+        const postion = { x: botShot.x, y: botShot.y };
+        const botSquareShot = Square.findSquare('player-1', postion);
+        botSquareShot.innerHTML = botShot.isHit ? 'x' : 'o';
       });
     });
   }

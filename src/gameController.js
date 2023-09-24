@@ -20,17 +20,17 @@ class GameController {
     const { x, y } = position;
     /* get move from human */
     const status = this.player2Water.receiveAttack(x, y);
-    let botLastShootStatus;
+    let botLastShotStatus;
     if (status !== -1) {
-      this.botPlayer.shoot(this.#handleShoot);
-      botLastShootStatus = this.botPlayer.lastShoot;
+      this.botPlayer.shot(this.#handleShot);
+      botLastShotStatus = this.botPlayer.lastShot;
     }
 
-    return { human: { status }, bot: botLastShootStatus };
+    return { human: { status }, bot: botLastShotStatus };
     /* then make a move for a bot */
   }
 
-  #handleShoot = (x, y) => this.player1Water.receiveAttack(x, y);
+  #handleShot = (x, y) => this.player1Water.receiveAttack(x, y);
 
   isGameOver = () => this.player2Water.allShipsSunk() || this.player1Water.allShipsSunk();
 

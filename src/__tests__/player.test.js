@@ -8,10 +8,10 @@ test('botPlayer', () => {
     () => player1Waters.getBoard(),
     player1Waters,
   );
-  botPlayer.shoot((x, y) => player1Waters.receiveAttack(x, y));
+  botPlayer.shot((x, y) => player1Waters.receiveAttack(x, y));
   const board = player1Waters.getBoard();
-  const shootAt = botPlayer.lastShoot;
-  expect(board[shootAt.x][shootAt.y].shoot).not.toBeNull();
+  const shotAt = botPlayer.lastShot;
+  expect(board[shotAt.x][shotAt.y].shot).not.toBeNull();
 });
 
 test('randomly add all ships to botPlayers board', () => {
@@ -38,11 +38,11 @@ test('randomly add all ships to botPlayers board', () => {
   expect(botWaters.ships).toHaveLength(5);
 });
 
-function countShoots(board) {
+function countShots(board) {
   let count = 0;
   board.forEach((squares) => {
     squares.forEach((square) => {
-      if (square.shoot) {
+      if (square.shot) {
         count += 1;
       }
     });
@@ -50,28 +50,28 @@ function countShoots(board) {
   return count;
 }
 
-describe('botPlayer shooting', () => {
+describe('botPlayer shoting', () => {
   const myWater = new Gameboard();
   const enemyWater = new Gameboard();
   const bot = new BotPlayer(myWater);
-  const handleShoot = (x, y) => enemyWater.receiveAttack(x, y);
+  const handleShot = (x, y) => enemyWater.receiveAttack(x, y);
 
   afterEach(() => {
     enemyWater.clearBoard();
     bot.clearHistory();
   });
 
-  test('fire a single shoot', () => {
-    bot.shoot(handleShoot);
+  test('fire a single shot', () => {
+    bot.shot(handleShot);
     const board = enemyWater.getBoard();
-    expect(countShoots(board)).toBe(1);
+    expect(countShots(board)).toBe(1);
   });
 
-  test('fire shoots to every square in the board', () => {
+  test('fire shots to every square in the board', () => {
     for (let i = 0; i < 100; i++) {
-      bot.shoot(handleShoot);
+      bot.shot(handleShot);
     }
     const board = enemyWater.getBoard();
-    expect(countShoots(board)).toBe(100);
+    expect(countShots(board)).toBe(100);
   });
 });
